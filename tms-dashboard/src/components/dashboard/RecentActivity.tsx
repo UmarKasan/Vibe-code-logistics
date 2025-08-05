@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Clock, Package, CheckCircle, AlertTriangle, ArrowRight } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { cn } from '@/lib/utils';
+
 
 export interface Activity {
   id: string;
@@ -37,7 +37,7 @@ const ActivityIcon = ({ type, status }: { type: Activity['type'], status?: strin
   return <ArrowRight className="h-4 w-4 text-gray-500" />;
 };
 
-export function RecentActivity({ activities, isLoading = false, className }: RecentActivityProps) {
+export function RecentActivity({ activities, isLoading = false }: RecentActivityProps) {
   if (isLoading) {
     return (
       <Card>
