@@ -34,7 +34,7 @@ The Terminal Management System is a web-based dashboard designed to streamline t
 
 | Feature Name             | Description                                                                 | Status         |
 |--------------------------|-----------------------------------------------------------------------------|----------------|
-| Dashboard View           | Overview of inbound AWBs with filters and quick stats                      | Not Started    |
+| Dashboard View           | Overview of inbound AWBs with filters and quick stats                       | Not Started    |
 | AWB/HAWB List Page       | Searchable and filterable table showing airway bills                        | Not Started    |
 | AWB Detail Page          | Timeline and full metadata of a specific AWB/HAWB                           | Not Started    |
 | Status Tracking UI       | Visual indicators for shipment status (e.g., Arrived, Ready, Collected)     | Not Started    |
