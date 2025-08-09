@@ -1,36 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login as apiLogin } from "@/api";
 import { useUserStore } from "@/store/userStore";
+
+type UserRole = 'manager' | 'handler' | 'trucker';
+
+interface User {
+  id: string;
+  name: string;
+  role: UserRole;
+  company?: string;
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login: storeLogin } = useUserStore();
-
-  const mutation = useMutation({
-    mutationFn: () => apiLogin(email),
-    onSuccess: (data) => {
-      if (data) {
-        toast.success(`Welcome back, ${data.name}!`);
-        storeLogin(data);
-        navigate('/');
-      } else {
-        toast.error('Login failed. Please check your credentials.');
-      }
-    },
-    onError: (error) => {
-      toast.error(`An error occurred: ${error.message}`);
-    },
-  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,9 +30,25 @@ export default function LoginPage() {
       toast.warning('Please enter both email and password.');
       return;
     }
-    // For the mock, we can suggest valid emails.
-    toast.info('Hint: Try manager@test.com, handler@test.com, or trucker@test.com');
-    mutation.mutate();
+    
+    setIsLoading(true);
+    
+    // Mock user data for any login
+    const mockUser: User = {
+      id: '1',
+      name: email.split('@')[0], // Use the part before @ as the username
+      role: 'manager', // Default to manager role for now
+      company: 'Demo Company'
+    };
+    
+    // Simulate API call
+    setTimeout(() => {
+      // Simulate successful login
+      toast.success(`Welcome, ${mockUser.name}!`);
+      storeLogin(mockUser);
+      navigate('/');
+      setIsLoading(false);
+    }, 500);
   };
 
   return (
@@ -63,7 +71,7 @@ export default function LoginPage() {
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={mutation.isPending}
+                disabled={isLoading}
               />
             </div>
             <div className="grid gap-2">
@@ -74,13 +82,13 @@ export default function LoginPage() {
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={mutation.isPending}
+                disabled={isLoading}
               />
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Signing In...' : 'Sign in'}
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading ? 'Signing In...' : 'Sign in'}
             </Button>
           </CardFooter>
         </form>
